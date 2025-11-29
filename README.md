@@ -147,8 +147,8 @@ The project includes a GitHub Actions workflow that:
 
 ## 👥 Contributors
 
-- Avinash Kumar (B22ME014)
 - Chintan Limbachiya (B22ME036)
+- Avinash Kumar (B22ME014)
 - Sumit (B22CH037)
 - Shashwat Meena (B22BB037)
 

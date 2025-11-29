@@ -1,78 +1,165 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/234bMY4A)
+# Mobility Network Community Detection API
 
-# Community Detection in Bike Sharing Data
+A production-ready microservice for analyzing bike sharing networks using community detection algorithms. Built with FastAPI, this service provides RESTful endpoints to detect communities in mobility networks using the Louvain algorithm.
 
-This project focuses on applying community detection algorithms to analyze the bike sharing data from the "Databike.csv" dataset.
+## 🚀 Features
 
-## Project Overview
+- **RESTful API** for community detection analysis
+- **Louvain Algorithm** implementation for efficient community detection
+- **Docker Support** for containerized deployment
+- **CI/CD Pipeline** with automated testing and linting
+- **Production-Ready** with proper error handling and logging
 
-The goal of this project is to identify communities or clusters within the bike sharing network using two popular community detection algorithms: Girvan-Newman algorithm and Louvain algorithm.
-## User Defined Functions
-1 bikeNetwork
-2 networkStats
-3 mapPlot
-4 heatMapPlot
-5 centralityBetweennes
-6 communityLouvain
-7 communityGirvanNewman
- 
-The project involves the following steps:
+## 📋 API Endpoints
 
-1. Data preprocessing: The dataset is loaded and cleaned, handling missing values and outliers.
-2. Network construction: The bike sharing data is transformed into a graph representation, where nodes represent bike stations and edges represent bike trips between stations.
-3. Girvan-Newman algorithm: The Girvan-Newman algorithm is applied to the network to detect communities.
-4. Louvain algorithm: The Louvain algorithm is also applied to the network to detect communities.
-5. Visualization: The detected communities are visualized on a map using the Folium library.
-6. Analysis: The results of the two community detection algorithms are compared and analyzed.
+### `GET /`
+Health check endpoint
+- **Response**: `{"message": "Mobility Network API is running. Go to /docs for Swagger UI."}`
 
-## Repository Structure
-
-The repository contains the following files:
-
-1. `DSAideathon.ipynb`: The Jupyter Notebook file containing the code for the project.
-2. `Databike.csv`: The dataset used for the project.
-3. `README.md`: This file, providing an overview of the project.
-
-## Dependencies
-
-The project requires the following Python libraries:
-
-- `numpy`
-- `pandas`
-- `networkx`
-- `matplotlib.pyplot`
-- `folium`
-- `community`
-
-You can install these dependencies using `pip` or `conda`:
-
-```
-pip install numpy pandas networkx matplotlib folium python-louvain
+### `GET /analyze`
+Analyze the bike sharing network and detect communities
+- **Response**:
+```json
+{
+  "status": "success",
+  "algorithm": "Louvain",
+  "results": {
+    "modularity_score": 0.42,
+    "total_communities_detected": 5,
+    "total_nodes": 234
+  }
+}
 ```
 
-## How to Run
+### `GET /docs`
+Interactive Swagger UI for API documentation
 
-1. Clone the repository to your local machine.
-2. Open the `DSAideathon.ipynb` file in a Jupyter Notebook environment.
-3. Run the cells in the notebook to execute the code and generate the results.
+## 🛠️ Installation & Setup
 
-## Results
+### Prerequisites
+- Python 3.9 or higher
+- Docker (optional, for containerized deployment)
 
-The project's main results are:
+### Local Development
 
-1. Identification of communities within the bike sharing network using the Girvan-Newman and Louvain algorithms.
-2. Visualization of the detected communities on a map using Folium.
-3. Comparison and analysis of the two community detection algorithms.
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd <repository-folder>
+```
 
-The insights gained from this analysis can be used to improve the bike sharing system, such as optimizing station locations, balancing bike distribution, and enhancing user experience.
+2. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
 
-## Conclusion
+3. **Run the application**
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
 
-This project demonstrates the application of community detection algorithms to analyze and understand the structure of a bike sharing network. The results provide valuable insights that can be leveraged to enhance the efficiency and effectiveness of the bike sharing system.
+4. **Access the API**
+- API: http://localhost:8000
+- Interactive Docs: http://localhost:8000/docs
+- Alternative Docs: http://localhost:8000/redoc
 
-##Contributers 
+## 🐳 Docker Deployment
 
-Avinash Kumar B22ME014
-Chintan Limbachiya B22ME036
-Sumit B22CH037
-Shashwat Meena B22BB037
+### Build the Docker image
+```bash
+docker build -t mobility-network-api .
+```
+
+### Run the container
+```bash
+docker run -p 8000:8000 mobility-network-api
+```
+
+The API will be available at http://localhost:8000
+
+## 🧪 Testing
+
+### Run all tests
+```bash
+pytest -v
+```
+
+### Run tests with coverage
+```bash
+pytest --cov=app --cov-report=html
+```
+
+### Run linting
+```bash
+flake8 . --count --statistics --max-line-length=120
+```
+
+## 📁 Project Structure
+
+```
+.
+├── app/
+│   ├── __init__.py          # Application package initialization
+│   ├── main.py              # FastAPI application and endpoints
+│   └── processing.py        # Graph processing and community detection
+├── data/
+│   └── Databike.csv         # Bike sharing dataset
+├── tests/
+│   └── test_main.py         # Unit tests
+├── .github/
+│   └── workflows/
+│       └── ci_pipeline.yml  # GitHub Actions CI/CD pipeline
+├── Dockerfile               # Container configuration
+├── requirements.txt         # Python dependencies
+├── pytest.ini              # Pytest configuration
+└── README.md               # This file
+```
+
+## 🔬 Algorithm Details
+
+### Louvain Algorithm
+The Louvain method is a greedy optimization algorithm that:
+- Maximizes modularity to detect communities
+- Runs in O(n log n) time complexity
+- Provides hierarchical community structure
+
+**Modularity Score**: Measures the quality of community division (range: -0.5 to 1.0)
+- Higher values indicate stronger community structure
+- Values > 0.3 typically indicate significant community structure
+
+## 📊 Dataset
+
+The project uses bike sharing data (`Databike.csv`) with the following structure:
+- **departure_id**: Starting station ID
+- **return_id**: Ending station ID
+- Each row represents a bike trip between two stations
+
+For performance, the API loads a subset of 1000 trips during initialization.
+
+## 🔄 CI/CD Pipeline
+
+The project includes a GitHub Actions workflow that:
+1. ✅ Sets up Python environment
+2. ✅ Installs dependencies
+3. ✅ Runs automated tests with pytest
+4. ✅ Performs code linting with flake8
+5. ✅ Builds Docker image to validate Dockerfile
+
+## 👥 Contributors
+
+- Avinash Kumar (B22ME014)
+- Chintan Limbachiya (B22ME036)
+- Sumit (B22CH037)
+- Shashwat Meena (B22BB037)
+
+## 📝 License
+
+This project was created as part of an academic assignment.
+
+## 🔮 Future Enhancements
+
+- Add support for Girvan-Newman algorithm
+- Implement graph visualization endpoints
+- Add support for larger datasets with pagination
+- Implement caching for frequently analyzed networks
+- Add authentication and rate limiting
